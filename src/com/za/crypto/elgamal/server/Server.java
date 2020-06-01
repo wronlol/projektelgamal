@@ -11,7 +11,7 @@ public class Server {
 	public static void main(String[] args) throws IOException {
 		Server server = new Server();
 		server.serverSocket = new ServerSocket(PORT);
-		System.out.println("[Passive Eve]: eavesdropping on all communication");
+		System.out.println("Pasywne sluchanie calej komunikacji");
 		while (true) {
 			ServerThread serverThread = new ServerThread(server.serverSocket.accept(), server);
 			server.serverThreads.add(serverThread);

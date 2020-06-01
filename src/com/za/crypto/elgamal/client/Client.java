@@ -25,7 +25,6 @@ public class Client {
 	private BigInteger otherPartyBeta = null;
 	private boolean readyFlag = false;
 	public static void main(String[] args) throws UnknownHostException, IOException {
-		if (ASCII_FLAG) System.out.println("[system]: running in ascii mode...");
 		BufferedReader bR = new BufferedReader(new InputStreamReader(System.in));
 		Client client = new Client();
 		ElgamalHelper elgamalHelper = new ElgamalHelper(client);
@@ -49,35 +48,35 @@ public class Client {
 			BigInteger i = null;
 			while (true){
 				try {
-					System.out.println("[system]: enter one time private key i from set {2,...,"+otherPartyName+"P-2}");
+					System.out.println("[system]: Wpisz jednorazowy klucz prywatny i ze zbioru {2,...,"+otherPartyName+"P-2}");
 					i = new BigInteger(bR.readLine()); 
 					break;
-				} catch (Exception e) {System.out.println("invalid entry.");};
+				} catch (Exception e) {System.out.println("Nieprawidlowe wpis.");};
 			}
 			BigInteger ephermalKey = otherPartyAlpha.modPow(i, otherPartyP);
-			System.out.println("["+name+"]: calculate one time public key ==> ephermalKey <congruent> "
+			System.out.println("["+name+"]: Oblicz jednorazowy klucz publiczny ==> kluczEfemeryczny <kongruentna> "
 														+otherPartyName+"Alpha^i mod "+otherPartyName+"P = "+ephermalKey);
 			BigInteger maskingKey = otherPartyBeta.modPow(i, otherPartyP);
-			System.out.println("[" + name + "]: calculate one time masking key ==> maskingKey <congruent> "+otherPartyName
+			System.out.println("[" + name + "]: Oblicz jednorazowy klucz maskujacy ==> kluczMaskujacy <kongruentna> "+otherPartyName
 														+"Beta^i mod "+otherPartyName+"P = "+maskingKey);
 			StringBuffer xStringBuffer = new StringBuffer();
 			if (!ASCII_FLAG) {
 				IntStream.range(0, xString.length()).forEach( index -> 
 					xStringBuffer.append(characterToAscii(xString.charAt(index)) + " "));
-				System.out.println("[" + name + "]: map char to ascii ==> " + xStringBuffer.toString());
+				System.out.println("[" + name + "]: Zmien na ascii ==> " + xStringBuffer.toString());
 			} else {
 				String[] xStringTokens = xString.split(" ");
 				IntStream.range(0, xStringTokens.length).forEach(index -> xStringBuffer.append(xStringTokens[index] + " "));
 			}	
 			String yString = ElgamalHelper.encryptMessage(xStringBuffer.toString(), maskingKey, otherPartyP);
-			System.out.println("[" + name + "]: encrypt ascii message ==> y <congruent> x*maskingKey mod "+otherPartyName+"P = " + yString);
+			System.out.println("[" + name + "]: Zaszyfruj wiadomosc ascii ==> y <kongruentna> x*kluczMaskujacy mod "+otherPartyName+"P = " + yString);
 			StringWriter sW = new StringWriter();
 			Json.createWriter(sW).writeObject(
 					         Json.createObjectBuilder()
 					             .add("name", name)
 					             .add("ephermalKey", ephermalKey.toString())
 					             .add("y", yString).build());
-			System.out.println("[" + name + "]: send "+sW.toString()+"\n");
+			System.out.println("[" + name + "]: Wyslij "+sW.toString()+"\n");
 			printWriter.println(sW);
 		}
 	}

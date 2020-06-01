@@ -24,9 +24,9 @@ public class ClientThread extends Thread {
 				client.setOtherPartyAlpha(new BigInteger(jsonObject.getString(("alpha"))));
 				client.setOtherPartyName(jsonObject.getString(("name")));
 				client.setOtherPartyBeta(new BigInteger(jsonObject.getString(("beta"))));
-				System.out.println("[system]: receive "+jsonObject.toString());
+				System.out.println("[system]: Odbierz "+jsonObject.toString());
 				if (client.getAlpha() == null) 
-					System.out.println("[system]: enter name, (prime #) p, (primitive element) alpha, & (private key) d from set {2,...,p-2}");
+					System.out.println("[system]: Podaj nazwe, (liczbe pierwsza #) p, (pierwiastek prymitywny) alpha i (klucz prywatny) d ze zbioru {2,...,p-2}");
 				if (client.getAlpha() != null && flag) {
 					System.out.println("[system]: Podaj nazwe  pliku do wyslania lub wpisz e:xit aby wyjsc");
 					flag = false;
@@ -36,19 +36,19 @@ public class ClientThread extends Thread {
 		}
 	}
 	private void handleIncomingMessage(JsonObject jsonObject) {
-		System.out.println("["+client.getName()+"]: receive "+jsonObject.toString());
+		System.out.println("["+client.getName()+"]: odbierz "+jsonObject.toString());
 		String yString = jsonObject.getString("y");
 		String ephermalKey = jsonObject.getString("ephermalKey");
 		BigInteger maskingKey = new BigInteger(ephermalKey).modPow(client.getD(), client.getP());
 		String name = "["+client.getName()+"]:";
-		System.out.println(name+" calculate one time masking key ==> maskingKey <congruent> ephermalKey^d mod p = "+maskingKey);
+		System.out.println(name+" Oblicz jednorazowy klucz maskujacy ==> kluczMaskujacy <kongruentna> kluczEfemeryczny^d mod p = "+maskingKey);
 		BigInteger[] x = ElgamalHelper.decryptMessage(yString, maskingKey, client.getP());
-		System.out.println(name+" decrypt ciphertext ==> x <congruent> y*maskingKey^(-1) mod p = "+ Arrays.toString(x));
+		System.out.println(name+" odszyfruj otrzymana wiadomosc ==> x <kongruentna> y*kluczMaskujacy^(-1) mod p = "+ Arrays.toString(x));
 		StringBuffer xStringBuffer = new StringBuffer(); 
 		if (!Client.ASCII_FLAG) {
 			IntStream.range(0, x.length).forEach(index -> xStringBuffer.append(
 								Client.asciiToCharacter(x[index].intValue())));
-			System.out.println(name+" map asii to char  & obtain original message ==> " + xStringBuffer.toString());
+			System.out.println(name+" Przeloz ascii na tekst i go podaj ==> " + xStringBuffer.toString());
 		} else {
 			IntStream.range(0, x.length).forEach(
 								index -> xStringBuffer.append(x[index].intValue() + " "));

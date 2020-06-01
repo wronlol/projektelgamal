@@ -16,17 +16,17 @@ public class ElgamalHelper {
 				StringWriter sW = new StringWriter();
 				while (true) {
 					try {
-						System.out.println("[system]: SERWER: PODAJ, (prime #) p, (primitive element) alpha, & (private key) d from set {2,...,p-2}");
+						System.out.println("[SERWER]: PODAJ (liczbe pierwsza #) p, (pierwiastek prymitywny) alpha i (klucz prywatny) d ze zbioru {2,...,p-2}");
 						String[] params = bR.readLine().split(" ");
 						client.setName("SERWER");
 						client.setP(new BigInteger(params[0]));
 						client.setAlpha(new BigInteger(params[1]));
 						client.setD(new BigInteger(params[2]));
 					    break;
-					} catch (Exception e) {System.out.println("invalid entry.");}
+					} catch (Exception e) {System.out.println("Zle dane.");}
 				}
 				client.setBeta(client.getAlpha().modPow(client.getD(), client.getP()));
-				System.out.println("["+client.getName()+"]: calculate public key ==> beta = alpha^d mod p = "+client.getBeta());
+				System.out.println("["+client.getName()+"]: Oblicz klucz publiczny ==> beta = alpha^d mod p = "+client.getBeta());
 				Json.createWriter(sW).writeObject(
 							     Json.createObjectBuilder()
 									 .add("name", client.getName())

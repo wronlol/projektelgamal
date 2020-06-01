@@ -23,14 +23,14 @@ public class ServerThread extends Thread {
 				System.out.println("\n[system]: "+jsonObject.toString());
 				server.forwardMessage(jsonObject.toString(), this);
 				if (jsonObject.containsKey("alpha")) 
-					System.out.println("[Passive Eve]: have p, alpha, & beta for "+jsonObject.getString("name"));
+					System.out.println("[SERWER]: Otrzymano p, alpha, & beta dla "+jsonObject.getString("name"));
 				else if (jsonObject.containsKey("ephermalKey")) {
-					System.out.println("[Passive Eve]: in order to obtain d or i, need to solve one of 2 DLP problems:");
-					System.out.println("[Passive Eve]: (1) to obtain d solve following DLP ==> d = logBaseAlpha(beta) mod p");
-					System.out.println("[Passive Eve]:     & calculate masking key ==> maskingKey <congruent> ephermalKey^d mod p");
-					System.out.println("[Passive Eve]: (2) to obtain i solve following DLP ==> i = logBaseAlpha(ephermalKey) mod p");
-					System.out.println("[Passive Eve]:     & calculate masking key ==> maskingKey <congruent> beta^i mod p");
-					System.out.println("[Passive Eve]: finally decrypt message ==> x <congruent> y*maskingKey^(-1) mod p");
+					System.out.println("[SERWER]: Aby otrzymac d lub i, jedno z dwoch rownan:");
+					System.out.println("[SERWER]: (1) aby otrzymac d rozwiaz to rownanie ==> d = logBaseAlpha(beta) mod p");
+					System.out.println("[SERWER]:     & i obliczyc klucz maskujacy ==> klucz maskujacy <kongruentna> kluczEfemeryczny^d mod p");
+					System.out.println("[SERWER]: (2) aby otrzymac i rozwiaz to rownanie ==> i = logBaseAlpha(kluczEfemeryczny) mod p");
+					System.out.println("[SERWER]:     i oblicz klucz maskujacy ==> klucz maskujacy <kongruentna> beta^i mod p");
+					System.out.println("[SERWER]: i w koncu odszyfruj wiadomosc ==> x <kongruentna> y*kluczMaskujacy^(-1) mod p");
 				}
 			} 
 		} catch (Exception e) { server.getServerThreads().remove(this);}
