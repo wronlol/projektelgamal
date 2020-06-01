@@ -1,8 +1,6 @@
 # projektelgamal
 Projekt FTP z enkrypcja ElGamala
 
-Praca w toku, na razie przesyła tylko pliki tekstowe
-
 Uruchamiamy poprzez Eclipse>Run as 1 application 
 
 ```
